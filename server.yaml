@@ -1,4 +1,0 @@
-model_path: /Users/jubernado/models/llm/qwen/qwen3-8b-q4.gguf
-n_ctx: 2048
-n_gpu_layers: 99
-port: 8080
