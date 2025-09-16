@@ -1,0 +1,9 @@
+^README\.Rmd$
+^README\.md$
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.renv$
+^renv\.lock$
+^python$
+^plan\.md$
+^grammars$

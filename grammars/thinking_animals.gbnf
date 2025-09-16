@@ -1,0 +1,7 @@
+root ::=  thinkingBlock animals
+thinkingBlock ::= thinkingStart anychar* thinkingEnd
+thinkingStart ::= "<|channel|>analysis<|message|>" | "<think>"
+thinkingEnd ::= "<|end|><|start|>assistant<|channel|>final<|message|>\n" | "</think>\n"
+animals ::= "ant" | "bear" | "cat" | "dog" | "elephant" | "fox" | "giraffe" | "hippo" | "iguana" | "jaguar" | "koala" | "lemur" | "monkey" | "narwhal" | "otter" | "panda" | "quail" | "shark" | "tiger" | "urchin" | "vulture" | "wolf" | "xerus" | "yak" | "zebra" | "badger" | "beaver" | "bison" | "camel" | "capybara" | "cheetah" | "chimpanzee" | "coyote" | "crow" | "deer" | "dolphin" | "eagle" | "ferret" | "flamingo" | "goat" | "goose" | "gorilla" | "hare" | "hedgehog" | "hummingbird" | "lion" | "moose" | "octopus"
+anychar ::= [^<]
+

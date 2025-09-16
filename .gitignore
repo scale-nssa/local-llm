@@ -1,0 +1,14 @@
+# python
+.venv
+
+
+# R
+.Rprofile
+renv/library
+renv/staging
+renv/library
+renv/local
+renv/cellar
+renv/lock
+renv/python
+renv/sandbox
