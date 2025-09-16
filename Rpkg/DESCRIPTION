@@ -1,0 +1,14 @@
+Package: localllm
+Type: Package
+Title: Local LLM tools
+Version: 0.1.1
+Authors@R: person(given = "Julian", family = "Bernado", role = c("aut","cre"), email = "jbernado@stanford.edu")
+Description: Minimal helpers to launch a local llama-server process and interact with its OpenAI-compatible chat API plus simple grammar generation utilities.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.2)
+Imports: httr2, jsonlite, yaml, processx
+Suggests: testthat (>= 3.1.0)
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1

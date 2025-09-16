@@ -1,0 +1,21 @@
+[project]
+name = "local-llm"
+version = "0.1.1"  # keep in sync with local_llm.__version__ manually for now
+description = "Minimal client + programmatic server launcher for local llama-server"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openai>=1.107.3",
+    "pyyaml>=6.0.2",
+]
+authors = [
+    {name = "Julian Bernado"}
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = ["local_llm"]
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
