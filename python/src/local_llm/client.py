@@ -14,6 +14,10 @@ from pathlib import Path
 _BASE_URL = os.getenv("LLAMA_BASE_URL", "http://127.0.0.1:8080/v1")
 _API_KEY  = os.getenv("LLAMA_API_KEY", "none")  # value ignored by llama-server
 
+################################
+# respond and calculate tokens #
+################################
+
 def get_response(
     prompt: str,
     model: str = "local",
@@ -39,6 +43,26 @@ def get_response(
 
     r = client.chat.completions.create(model=model, messages=messages, **kwargs)
     return r.choices[0].message.content.strip()
+
+def num_tokens(
+        prompt: str,
+        model: str = "local"
+) -> int:
+    client = OpenAI(base_url=_BASE_URL, api_key=_API_KEY)
+    messages = []
+    messages.append({"role": "user", "content": prompt})
+    r = client.chat.completions.create(
+        model=model,
+        messages=messages,
+        max_tokens=0,       # prompt eval only
+        temperature=0,      # irrelevant here, keeps it deterministic
+    )
+    return r.usage.prompt_tokens
+
+
+#####################
+# grammar functions #
+#####################
 
 def grammar(path: str | os.PathLike[str]) -> str:
     """Load a .gbnf grammar file into a string."""

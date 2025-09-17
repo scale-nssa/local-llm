@@ -14,15 +14,14 @@ get_response <- function(prompt,
                          max_tokens = NULL,
                          temperature = NULL,
                          grammar = NULL) {
-  if (!requireNamespace("httr2", quietly = TRUE)) stop("Install 'httr2'")
-  if (!requireNamespace("jsonlite", quietly = TRUE)) stop("Install 'jsonlite'")
-
   base_url <- Sys.getenv("LLAMA_BASE_URL", "http://127.0.0.1:8080/v1")
   api_key  <- Sys.getenv("LLAMA_API_KEY",  "none")
 
   msgs <- list()
-  if (!is.null(system_prompt)) msgs <- append(msgs, list(list(role="system", content=system_prompt)))
-  msgs <- append(msgs, list(list(role="user", content=prompt)))
+  if (!is.null(system_prompt)) {
+    msgs <- append(msgs, list(list(role = "system", content = system_prompt)))
+  }
+  msgs <- append(msgs, list(list(role = "user", content = prompt)))
 
   body <- list(model = model, messages = msgs)
   if (!is.null(max_tokens))  body$max_tokens  <- as.integer(max_tokens)
@@ -39,9 +38,13 @@ get_response <- function(prompt,
   resp <- httr2::req_perform(req)
   out  <- httr2::resp_body_json(resp, simplifyVector = TRUE)
   content <- try(out$choices$message$content, silent = TRUE)
-  if (inherits(content, "try-error") || is.null(content)) stop("No content in response")
+  if (inherits(content, "try-error") || is.null(content)) {
+    stop("No content in response")
+  }
   trimws(content)
 }
+
+
 
 #' Load a GBNF grammar file
 #' @param path Path to .gbnf file.

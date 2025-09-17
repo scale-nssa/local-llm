@@ -9,7 +9,9 @@
 #' @export
 multiple_choice_grammar <- function(choices, save_dir, name, thinking = TRUE) {
   if (length(choices) < 1) stop("choices must be non-empty")
-  if (!grepl("^[A-Za-z_][A-Za-z0-9_]*$", name)) stop("name must be a valid rule identifier")
+  if (!grepl("^[A-Za-z_][A-Za-z0-9_]*$", name)) {
+    stop("name must be a valid rule identifier")
+  }
 
   .esc <- function(s) {
     s <- gsub("\\\\", "\\\\\\\\", s)  # backslash
@@ -18,7 +20,13 @@ multiple_choice_grammar <- function(choices, save_dir, name, thinking = TRUE) {
     s <- gsub("\t", "\\\\t", s, fixed = TRUE) # tab -> \t
     s
   }
-  alts <- paste(sprintf('"%s"', vapply(choices, function(x) .esc(as.character(x)), character(1))), collapse = " | ")
+  alts <- paste(
+    sprintf(
+      '"%s"',
+      vapply(choices, function(x) .esc(as.character(x)), character(1))
+    ),
+    collapse = " | "
+  )
 
   if (isTRUE(thinking)) {
     content <- paste0(
@@ -38,7 +46,9 @@ multiple_choice_grammar <- function(choices, save_dir, name, thinking = TRUE) {
     filename <- paste0(name, ".gbnf")
   }
 
-  if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE, showWarnings = FALSE)
+  if (!dir.exists(save_dir)) {
+    dir.create(save_dir, recursive = TRUE, showWarnings = FALSE)
+  }
   writeLines(content, file.path(save_dir, filename), useBytes = TRUE)
   content
 }
