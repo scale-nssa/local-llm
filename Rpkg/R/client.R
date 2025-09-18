@@ -44,7 +44,31 @@ get_response <- function(prompt,
   trimws(content)
 }
 
+num_tokens <- function(
+  prompt,
+  model = "local",
+  add_special = FALSE,
+  parse_special = FALSE,
+  timeout_sec = 60
+) {
+  base_url = Sys.getenv("LLAMA_BASE_URL", "http://127.0.0.1:8080/tokenize")
+  payload <- list(
+    content = prompt,
+    add_special = add_special,
+    parse_special = parse_special,
+    model = model
+  )
 
+  req  <- httr2::request(base_url) |>
+    httr2::req_body_json(payload) |>
+    httr2::req_timeout(timeout_sec)
+
+  resp <- httr2::req_perform(req)
+  data <- httr2::resp_body_json(resp)
+
+  if (is.null(data$tokens)) stop("Response missing 'tokens' field")
+  length(data$tokens)
+}
 
 #' Load a GBNF grammar file
 #' @param path Path to .gbnf file.

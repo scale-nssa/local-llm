@@ -10,11 +10,12 @@ The start_server function launches a llama-server process and returns a ServerHa
 object that can be used to manage its lifecycle. Intended for local research use.
 """
 
-from .client import get_response, grammar, multiple_choice_grammar
+from .client import get_response, grammar, multiple_choice_grammar, num_tokens
 from .server import start_server, ServerHandle
 
 __all__ = [
 	"get_response",
+    "num_tokens",
 	"grammar",
 	"multiple_choice_grammar",
 	"start_server",

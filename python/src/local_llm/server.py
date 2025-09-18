@@ -60,7 +60,6 @@ def _build_args(
     cors: str | None,
     log_disable: bool,
     log_colors: bool | None,
-    quiet: bool,
     verbose: bool,
     api_key: str | None,
     extra_args: Iterable[str] | None,
@@ -82,7 +81,6 @@ def _build_args(
     if cors:                     args += ["--cors", cors]
     if log_disable:              args += ["--log-disable"]
     if log_colors is False:      args += ["--log-colors=0"]
-    if quiet:                    args += ["-q"]
     if verbose:                  args += ["-v"]
     if api_key:                  args += ["--api-key", api_key]
     if extra_args:               args += list(map(str, extra_args))
@@ -127,7 +125,6 @@ def start_server(
     cors: str | None = None,
     log_disable: bool = False,
     log_colors: bool | None = None,
-    quiet: bool = False,
     verbose: bool = False,
     api_key: str | None = None,
     extra_args: list[str] | None = None,
@@ -181,7 +178,6 @@ def start_server(
         cors=cors,
         log_disable=log_disable,
         log_colors=log_colors,
-        quiet=quiet,
         verbose=verbose,
         api_key=api_key,
         extra_args=extra_args,

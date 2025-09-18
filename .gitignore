@@ -1,6 +1,10 @@
+.DS_Store
+.vscode
+
 # python
 .venv
-
+*.egg-info/
+__pycache__
 
 # R
 .Rprofile
