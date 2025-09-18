@@ -3,7 +3,7 @@
 Public functions:
     get_response: minimal OpenAI-compatible chat request
     grammar: load a .gbnf file into a string
-    multiple_choice_grammar: generate and save a simple grammar enumerating choices
+    multiple_choice_grammar: generate a simple grammar enumerating choices (optionally save to disk)
 """
 from __future__ import annotations
 
@@ -128,11 +128,15 @@ def grammar(path: str | os.PathLike[str]) -> str:
 _IDENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
 def multiple_choice_grammar(
-    choices, save_dir: str | os.PathLike[str], name: str, thinking: bool = True
+    choices,
+    name: str,
+    save_dir: str | os.PathLike[str] | None = None,
+    thinking: bool = True,
 ) -> str:
-    """Generate and save a grammar enumerating `choices`.
+    """Generate a grammar enumerating `choices`.
 
-    Returns the grammar text; writes file into save_dir.
+    Returns the grammar text. If `save_dir` is provided (not None), writes a
+    .gbnf file into that directory; if `save_dir` is None, no file is written.
     """
     if not choices:
         raise ValueError("choices must be non-empty")
@@ -148,7 +152,7 @@ def multiple_choice_grammar(
 
     if thinking:
         content = (
-            f"""root ::=  thinkingBlock {name}
+            f"""root ::=  thinkingBlock? {name}
 thinkingBlock ::= thinkingStart anychar* thinkingEnd
 thinkingStart ::= "<|channel|>analysis<|message|>" | "<think>"
 thinkingEnd ::= "<|end|><|start|>assistant<|channel|>final<|message|>\\n" | "</think>\\n"
@@ -163,7 +167,16 @@ anychar ::= [^<]
 """
         filename = f"{name}.gbnf"
 
-    p = Path(save_dir)
-    p.mkdir(parents=True, exist_ok=True)
-    (p / filename).write_text(content, encoding="utf-8", newline="\n")
+    if save_dir is not None:
+        p = Path(save_dir)
+        p.mkdir(parents=True, exist_ok=True)
+        (p / filename).write_text(content, encoding="utf-8", newline="\n")
     return content
+
+# utils
+def strip_thinking(response: str) -> str:
+    """Remove any <think>...</think> blocks (including the tags) and trim whitespace."""
+    if not response:
+        return ""
+    cleaned = re.sub(r"\s*<think>.*?</think>\s*", " ", response, flags=re.DOTALL | re.IGNORECASE)
+    return cleaned.strip()
